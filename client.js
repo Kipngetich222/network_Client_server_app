@@ -6,7 +6,18 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-rl.question('Enter the radius of the circle: ', (radius) => {
+function getValidRadius() {
+    rl.question('Enter the radius of the circle: ', (radius) => {
+        if (!isNaN(radius) && parseFloat(radius) >= 0) {
+            sendRequest(parseFloat(radius));
+        } else {
+            console.log('Invalid input. Please enter a non-negative number.');
+            getValidRadius();
+        }
+    });
+}
+
+function sendRequest(radius) {
     const options = {
         host: 'localhost',
         port: 3000,
@@ -30,4 +41,6 @@ rl.question('Enter the radius of the circle: ', (radius) => {
     });
 
     request.end();
-});
+}
+
+getValidRadius();
